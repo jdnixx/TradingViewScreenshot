@@ -23,7 +23,7 @@ chrome_options = Options()
 # chrome_options.add_argument("--headless")
 chrome_options.add_argument(f"--window-size=640,{height}")
 chrome_options.add_argument("--hide-scrollbars")
-driver = webdriver.Chrome("/Program Files/chromedriver", options=chrome_options)
+driver = webdriver.Chrome("/app/.apt/usr/bin/google-chrome", options=chrome_options)
 
 driver.get(url)
 #pause 3 second to let page loads
