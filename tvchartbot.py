@@ -26,6 +26,7 @@ url = "https://www.tradingview.com/chart/UzJ9PCY8/#"
 
 class TradingViewScraper:
     def __init__(self):
+        print("TradingViewScraper IS INIT'ing")
         ### OPENING A HEADLESS BROWSER ###
         chrome_options = Options()
         chrome_options.add_argument("--headless")
@@ -86,5 +87,10 @@ class TradingViewScraper:
         return screenshot_binary
 
 
-tv = TradingViewScraper()
+tv = None
+try:
+    tv = TradingViewScraper()
+except Exception:
+    print("creating tv object failed")
+
 bindata = tv.get_chart_screenshot_binary("ltcusd")
