@@ -18,7 +18,6 @@ from selenium.webdriver.chrome.options import Options
 print('STARTING')
 
 
-
 USER = "groupmebot"
 PASS = "groupmebot1"
 
