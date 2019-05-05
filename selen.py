@@ -1,6 +1,9 @@
 """
-Original script idea from:
-https://stackoverflow.com/questions/51653344/taking-screenshot-of-whole-page-with-python-selenium-and-firefox-or-chrome-headl
+selen - Tradingview scraper module
+
+* DEPRECATED!!! *
+
+Use tvchartbot instead. This is only kept for reference.
 """
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -11,6 +14,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 import time
 
+USER = "groupmebot"
+PASS = "groupmebot1"
 
 SYMBOL = 'btcusd'
 
@@ -32,7 +37,7 @@ height=600
 #Open another headless browser with height extracted above
 chrome_options = Options()
 # chrome_options.add_argument("--headless")
-chrome_options.add_argument(f"--window-size=800,{height}")
+chrome_options.add_argument(f"--window-size=800,600")
 chrome_options.add_argument("--hide-scrollbars")
 driver = webdriver.Chrome("/Program Files/chromedriver", options=chrome_options)
 # driver = webdriver.Chrome("/Program Files/chromedriver", options=chrome_options)
@@ -45,18 +50,20 @@ driver.get(url)
 
 ### LOGGING IN ###
 
+# finds "log in" hyperlink (if currently on error page)
 login = driver.find_element_by_class_name('js-login-link')
 print(login)
 login.click()
 
-
+# wait for js login prompt
 username = WebDriverWait(driver, 1, 0.05).until(
     EC.presence_of_element_located((By.NAME, 'username')))
-
 print(username)
 
-password = driver.find_element_by_name('password')
+# find password
+password = driver.find_element_by_name('password')      # if username box is found, then password is visible too
 
+# put in da details
 username.send_keys(USER)
 password.send_keys(PASS)
 password.send_keys(Keys.RETURN)
@@ -64,14 +71,18 @@ password.send_keys(Keys.RETURN)
 
 ### ENTERING TICKER ###
 
+# symbol input box (top-left)
 tickerinput = WebDriverWait(driver, 10, 0.05).until(
     EC.presence_of_element_located((By.CLASS_NAME, 'input-3lfOzLDc-')))
 
 tickerinput.send_keys(SYMBOL)
 
-binancebtcusd = WebDriverWait(driver, 10, 0.05).until(
+# drop-down of matching symbols
+tickeritem = WebDriverWait(driver, 10, 0.05).until(
     EC.presence_of_element_located((By.XPATH, '//tr[@data-item-ticker="BINANCE:BTCUSDT"]')))
-print(binancebtcusd.get_attribute('data-item-ticker'))
+print(tickeritem.get_attribute('data-item-ticker'))
+
+
 
 
 
@@ -82,4 +93,5 @@ print(binancebtcusd.get_attribute('data-item-ticker'))
 
 #save screenshot
 driver.save_screenshot('screen_shot.png')
+screenshot_binary = driver.get_screenshot_as_png()
 driver.close()
