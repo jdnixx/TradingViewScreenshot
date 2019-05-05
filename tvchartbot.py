@@ -16,7 +16,10 @@ from selenium.webdriver.chrome.options import Options
 import time
 
 
-SYMBOL = 'btcusd'
+
+USER = "groupmebot"
+PASS = "groupmebot1"
+
 
 url = "https://www.tradingview.com/chart/UzJ9PCY8/#"
 
@@ -28,8 +31,8 @@ class TradingViewScraper:
         # chrome_options.add_argument("--headless")
         chrome_options.add_argument(f"--window-size=800,600")
         chrome_options.add_argument("--hide-scrollbars")
-        self.driver = webdriver.Chrome("/Program Files/chromedriver", options=chrome_options)
         # self.driver = webdriver.Chrome("/Program Files/chromedriver", options=chrome_options)
+        self.driver = webdriver.Chrome("/app/.apt/usr/bin/google-chrome", options=chrome_options)
 
         self.driver.get(url)
 
@@ -37,21 +40,25 @@ class TradingViewScraper:
 
         # finds "log in" hyperlink (if currently on error page)
         login = self.driver.find_element_by_class_name('js-login-link')
+        print("Login:")
         print(login)
         login.click()
 
         # wait for js login prompt
         username = WebDriverWait(self.driver, 1, 0.05).until(
             EC.presence_of_element_located((By.NAME, 'username')))
+        print("Username:")
         print(username)
 
         # find password
         password = self.driver.find_element_by_name('password')  # if username box is found, then password is visible too
 
+
         # put in da details
         username.send_keys(USER)
         password.send_keys(PASS)
         password.send_keys(Keys.RETURN)
+        print("Login info entered")
 
 
     def get_chart_screenshot_binary(self, sym):
@@ -60,16 +67,24 @@ class TradingViewScraper:
         # symbol input box (top-left)
         tickerinput = WebDriverWait(self.driver, 10, 0.05).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'input-3lfOzLDc-')))
+        print("tickerinput:")
+        print(tickerinput)
 
-        tickerinput.send_keys(SYMBOL)
+        tickerinput.click()
+        tickerinput.send_keys(sym)
 
         # drop-down of matching symbols
-        tickeritem = WebDriverWait(self.driver, 10, 0.05).until(
-            EC.presence_of_element_located((By.XPATH, '//tr[@data-item-ticker="BINANCE:BTCUSDT"]')))
-        print(tickeritem.get_attribute('data-item-ticker'))
+        # tickeritem = WebDriverWait(self.driver, 10, 0.05).until(
+        #     EC.presence_of_element_located((By.XPATH, '//tr[@data-item-ticker="BINANCE:BTCUSDT"]')))
+        # print(tickeritem.get_attribute('data-item-ticker'))
 
         ### SCREENSHOT ###
-        # self.driver.save_screenshot('screen_shot.png')
+        self.driver.save_screenshot('screen_shot.png')
+        print("Screenshot saved")
         screenshot_binary = self.driver.get_screenshot_as_png()
-        self.driver.close()
+        # self.driver.close()
         return screenshot_binary
+
+
+tv = TradingViewScraper()
+bindata = tv.get_chart_screenshot_binary("ltcusd")

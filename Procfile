@@ -1,1 +1,1 @@
-worker: selen.py --log-file=-
+worker: tvchartbot.py --log-file=-
