@@ -28,7 +28,7 @@ class TradingViewScraper:
     def __init__(self):
         ### OPENING A HEADLESS BROWSER ###
         chrome_options = Options()
-        # chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--headless")
         chrome_options.add_argument(f"--window-size=800,600")
         chrome_options.add_argument("--hide-scrollbars")
         # self.driver = webdriver.Chrome("/Program Files/chromedriver", options=chrome_options)
