@@ -13,7 +13,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 # from PIL import Image
 from selenium.webdriver.chrome.options import Options
-import time
+
+
+print('STARTING')
 
 
 
@@ -34,7 +36,7 @@ class TradingViewScraper:
         chrome_options.add_argument("--hide-scrollbars")
         # self.driver = webdriver.Chrome("/Program Files/chromedriver", options=chrome_options)
         chrome_options.binary_location = '/app/.apt/usr/bin/google-chrome'
-        self.driver = webdriver.Chrome(options=chrome_options)
+        self.driver = webdriver.Chrome(chrome_options=chrome_options)
 
         self.driver.get(url)
 
